@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>{{ title }}-天天生鲜</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+    {%block head%}{%endblock head%}
+</head>
+
+<body>
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				<!--<div class="login_info fl">-->
+					<!--欢迎您：<em>张 山</em>-->
+				<!--</div>-->
+                {% if request.session.user_name|default:'' != '' %}
+                    <div class="login_btn fl">
+                        <a>欢迎您:</a>
+                        <a>{{request.session.user_name}}</a>
+                        <span>|</span>
+                        <a href="/user/logout/">注销</a>
+                    </div>
+                {% else %}
+                    <div class="login_btn fl">
+                        <a href="/user/login/">登录</a>
+                        <span>|</span>
+                        <a href="/user/register/">注册</a>
+                    </div>
+                {% endif %}
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="/user/info/">用户中心</a>
+					<span>|</span>
+					<a href="/cart/">我的购物车</a>
+					<span>|</span>
+					<a href="/cart/place_order/">我的订单</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+		<form class="search_con fr" action="/search/" method="get">
+			<input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+			<input type="submit" class="input_btn fr" name="" value="搜索">
+		</form>
+	</div>
+{% block body %}{% endblock body %}
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+
+</body>
+</html>

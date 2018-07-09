@@ -1,0 +1,131 @@
+{% extends 'df_goods/base.html' %}
+
+{%block head%}{%endblock head%}
+
+{% block body %}
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>	
+				<span></span>			
+				<ul class="subnav">
+					<li><a href="/list1_1_1/" class="fruit">新鲜水果</a></li>
+					<li><a href="/list2_1_1/" class="seafood">海鲜水产</a></li>
+					<li><a href="/list3_1_1/" class="meet">猪牛羊肉</a></li>
+					<li><a href="/list4_1_1/" class="egg">禽类蛋品</a></li>
+					<li><a href="/list5_1_1/" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/list6_1_1/" class="ice">速冻食品</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<a href="/">全部分类</a>
+		<span>></span>
+		<a href="#">{{ title }}</a>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+                    {% for new in news %}
+                        <li>
+                            <a href="/{{ new.id }}/"><img src="/upload/{{ new.gpic }}"></a>
+                            <h4><a href="/{{ new.id }}/">{{ new.gtitle }}</a></h4>
+                            <div class="prize">{{ new.gprice }}</div>
+                        </li>
+                    {% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="/list{{typeinfo.id}}_1_1/"
+                   {% if sort == '1' %}
+                        class="active"
+                   {% endif %}
+                >默认</a>
+                <a href="/list{{typeinfo.id}}_1_2/"
+                   {% if sort == '2' %}
+                        class="active"
+                   {% endif %}
+                >价格</a>
+                <a href="/list{{typeinfo.id}}_1_3/"
+                   {% if sort == '3' %}
+                        class="active"
+                   {% endif %}
+                >人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+                {% for g in page %}
+                    <li>
+                        <a href="/{{ g.id }}/"><img src="/upload/{{ g.gpic }}"></a>
+                        <h4><a href="/{{ g.id }}/">{{ g.gtitle }}</a></h4>
+                        <div class="operate">
+                            <span class="prize">{{ g.gprice }}</span>
+                            <span class="unit">{{ g.gprice }}/{{ g.gunit }}</span>
+                            <a href="/cart/add{{g.id}}_1/" class="add_goods" title="加入购物车"></a>
+                        </div>
+                    </li>
+                {% endfor %}
+			</ul>
+
+			<div class="pagenation">
+                {% if page.has_previous %}
+				    <a href="/list{{ typeinfo.id }}_{{page.previous_page_number}}_{{sort}}/">&lt;上一页</a>
+                {% else %}
+                    <a href="/list{{ typeinfo.id }}_1_{{sort}}/">&lt;上一页</a>
+                {% endif %}
+
+                {% if page.number <= 5 %}   <!--当前页面数小于3时-->
+                    {% for page_num in paginator.page_range %}
+                        {%if forloop.counter <= 5 %}
+                            <a href="/list{{ typeinfo.id }}_{{page_num}}_{{sort}}/"
+                               {% if page.number == page_num %}
+                               class="active"
+                               {% endif %}
+                            >{{ page_num }}</a>
+                        {%endif%}
+                    {% endfor %}
+                {% else %}
+                    {% if page.number|add:1 > paginator.num_pages %}
+                        <a href="/list{{ typeinfo.id }}_{{page.number|add:-4}}_{{sort}}/">{{ page.number|add:-4}}</a>
+                    {% endif %}
+                    {% if page.number|add:2 > paginator.num_pages %}
+                        <a href="/list{{ typeinfo.id }}_{{page.number|add:-3}}_{{sort}}/">{{ page.number|add:-3}}</a>
+                    {% endif %}
+                    <a href="/list{{ typeinfo.id }}_{{page.number|add:-2}}_{{sort}}/" >{{ page.number|add:-2}}</a>
+                    <a href="/list{{ typeinfo.id }}_{{page.number|add:-1}}_{{sort}}/">{{ page.number|add:-1}}</a>
+                    <a href="/list{{ typeinfo.id }}_{{page.number}}_{{sort}}/" class="active">{{ page.number }}</a>
+                    {% if page.number|add:1 <= paginator.num_pages %}
+                        <a href="/list{{ typeinfo.id }}_{{page.number|add:1}}_{{sort}}/">{{ page.number|add:1}}</a>
+                    {% endif %}
+                    {% if page.number|add:2 <= paginator.num_pages %}
+                        <a href="/list{{ typeinfo.id }}_{{page.number|add:2}}_{{sort}}/">{{ page.number|add:2}}</a>
+                    {% endif %}
+                {% endif %}
+
+                {% if page.has_next %}
+				    <a href="/list{{ typeinfo.id }}_{{page.next_page_number}}_{{sort}}/">下一页&gt;</a>
+                    <!--<script>console.log('{{paginator.num_pages}}')</script>-->
+                {% else %}
+                    <a href="/list{{ typeinfo.id }}_{{paginator.num_pages}}_{{sort}}/">下一页&gt;</a>
+
+                {% endif %}
+			</div>
+
+		</div>
+	</div>
+{% endblock body %}

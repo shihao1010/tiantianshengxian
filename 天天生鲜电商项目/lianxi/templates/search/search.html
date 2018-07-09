@@ -1,0 +1,88 @@
+{% extends 'df_goods/base.html' %}
+
+{%block head%}{%endblock head%}
+
+{% block body %}
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>
+				<span></span>			
+				<ul class="subnav">
+					<li><a href="/list1_1_1/" class="fruit">新鲜水果</a></li>
+					<li><a href="/list2_1_1/" class="seafood">海鲜水产</a></li>
+					<li><a href="/list3_1_1/" class="meet">猪牛羊肉</a></li>
+					<li><a href="/list4_1_1/" class="egg">禽类蛋品</a></li>
+					<li><a href="/list5_1_1/" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/list6_1_1/" class="ice">速冻食品</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<a href="/">搜索"<span style="color: #ff662a">{{query}}<span>"结果为</a>
+	</div>
+	<div class="main_wrap clearfix">
+        <ul class="goods_type_list clearfix">
+            {% for result in page %}
+                <li>
+                    <a href="/{{ result.id }}/"><img src="/upload/{{ result.gpic }}"></a>
+                    <h4><a href="/{{ result.id }}/">{{ result.gtitle }}</a></h4>
+                    <div class="operate">
+                        <span class="prize">{{ result.gprice }}</span>
+                        <span class="unit">{{ result.gprice }}/{{ result.gunit }}</span>
+                        <a href="/cart/add{{result.id}}_1/" class="add_goods" title="加入购物车"></a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="pagenation">
+            {% if page.has_previous %}
+                <a href="/search?q={{query}}&page={{page.previous_page_number}}">&lt;上一页</a>
+            {% else %}
+                <a href="/search?q={{ query }}">&lt;上一页</a>
+            {% endif %}
+            {% if page.number <= 5 %}   <!--当前页面数小于5时-->
+                {% for page_num in paginator.page_range %}
+                    {%if forloop.counter <= 5 %}
+                    <a href="/search?q={{query}}&page={{page_num}}"
+                       {% if page.number == page_num %}
+                       class="active"
+                       {% endif %}
+                    >{{ page_num }}</a>
+                    {%endif%}
+                {% endfor %}
+            {% else %}
+                {% if page.number|add:1 > paginator.num_pages %}
+                    <a href="/search?q={{query}}&page={{page.number|add:-4}}">{{ page.number|add:-4}}</a>
+                {% endif %}
+                {% if page.number|add:2 > paginator.num_pages %}
+                    <a href="/search?q={{query}}&page={{page.number|add:-3}}">{{ page.number|add:-3}}</a>
+                {% endif %}
+                <a href="/search?q={{query}}&page={{page.number|add:-2}}" >{{ page.number|add:-2}}</a>
+                <a href="/search?q={{query}}&page={{page.number|add:-1}}">{{ page.number|add:-1}}</a>
+                <a href="/search?q={{query}}&page={{page.number}}" class="active">{{ page.number }}</a>
+                {% if page.number|add:1 <= paginator.num_pages %}
+                    <a href="/search?q={{query}}&page={{page.number|add:1}}">{{ page.number|add:1}}</a>
+                {% endif %}
+                {% if page.number|add:2 <= paginator.num_pages %}
+                    <a href="/search?q={{query}}&page={{page.number|add:2}}">{{ page.number|add:2}}</a>
+                {% endif %}
+            {% endif %}
+
+            {% if page.has_next %}
+                <a href="/search?q={{query}}&page={{page.next_page_number}}">下一页&gt;</a>
+            {% else %}
+                <a href="/search?q={{query}}&page={{paginator.num_pages}}">下一页&gt;</a>
+            {% endif %}
+        </div>
+	</div>
+{% endblock body %}
