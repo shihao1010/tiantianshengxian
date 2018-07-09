@@ -1,1 +1,1 @@
-# tiantianshengxian
+虚拟环境和需要安装的包太大了，没有提交，需要的可以在pycharm中安装配置，比较简单
